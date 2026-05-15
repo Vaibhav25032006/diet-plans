@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herbalife Smart Wellness Studio</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #f0f4f8; color: #333; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .app-container { background: #ffffff; max-width: 500px; width: 100%; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; padding: 30px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { color: #2e7d32; font-size: 26px; font-weight: bold; }
+        .input-group { margin-bottom: 20px; }
+        input[type="text"] { width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 8px; font-size: 16px; outline: none; transition: 0.3s; }
+        input[type="text"]:focus { border-color: #2e7d32; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-bottom: 10px; text-transform: uppercase; }
+        .btn-verify { background: #2e7d32; color: white; }
+        .btn-verify:hover { background: #1b5e20; }
+        .btn-canva { background: #d32f2f; color: white; margin-top: 20px; }
+        .btn-canva:hover { background: #b71c1c; }
+        .status-msg { text-align: center; font-weight: bold; margin-top: 15px; font-size: 15px; }
+        .dashboard { display: none; margin-top: 20px; text-align: center; }
+        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .menu-card { background: #f1f8e9; padding: 20px; border-radius: 10px; border: 1px solid #c8e6c9; cursor: pointer; font-weight: bold; font-size: 15px; }
+        .menu-card:hover { background: #c8e6c9; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header">
+        <h1>HERBALIFE SMART WELLNESS</h1>
+        <p style="color: #666; margin-top: 5px;">Browser Web Portal</p>
+    </div>
+
+    <!-- LOGIN SECTION -->
+    <div id="login-section">
+        <div class="input-group">
+            <input type="text" id="memberIdInput" placeholder="Enter Member ID here...">
+        </div>
+        <button class="btn btn-verify" onclick="verifyId()">Verify & Analyze</button>
+        <div id="statusMessage" class="status-msg"></div>
+    </div>
+
+    <!-- DASHBOARD SECTION (SABHI SPECIFIC BUTTONS KE SAATH) -->
+    <div id="dashboard-section" class="dashboard">
+        <h2 id="welcomeText" style="color: #2e7d32; margin-bottom: 15px;">Welcome!</h2>
+        <p>AI Professional Coach System Active</p>
+        
+        <div class="grid-menu">
+            <div class="menu-card" onclick="alert('PDF Diet Plan Feature coming to web!')">📋<br>Diet Plan</div>
+            <div class="menu-card" onclick="alert('Camera Scanner coming to web!')">📷<br>Scan Activity</div>
+            <div class="menu-card" onclick="alert('Calendar logs coming to web!')">📅<br>Calendar</div>
+            <div class="menu-card" onclick="alert('AI Female Voice active soon!')">🎙️<br>Talk to AI</div>
+        </div>
+
+        <button class="btn btn-canva" onclick="window.open('https://herbalife-smart-wellness-studio.my.canva.site/page-3', '_blank')">🌐 Go to Main Website</button>
+    </div>
+</div>
+
+<script>
+    function verifyId() {
+        const memberId = document.getElementById('memberIdInput').value;
+        const statusBox = document.getElementById('statusMessage');
+        
+        if(!memberId) {
+            statusBox.style.color = "red";
+            statusBox.innerText = "Error: Please enter a Member ID";
+            return;
+        }
+
+        statusBox.style.color = "#333";
+        statusBox.innerText = "Checking Google Sheet records...";
+
+        // Flask API ko call karna
+        fetch('/api/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ member_id: memberId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                statusBox.innerText = "";
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('dashboard-section').style.display = 'block';
+                document.getElementById('welcomeText').innerText = `Coach Dashboard\nWelcome, ${data.name}!`;
+            } else {
+                statusBox.style.color = "red";
+                statusBox.innerText = data.error;
+            }
+        })
+        .catch(err => {
+            statusBox.style.color = "red";
+            statusBox.innerText = "Server Error: Make sure app_web.py is running.";
+        });
+    }
+</script>
+</body>
+</html>
