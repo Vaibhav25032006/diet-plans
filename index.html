@@ -82,7 +82,7 @@
 <script>
     let globalUserData = null;
     
-    // Exact API url for fetching Google Sheet data safely
+    // Google Sheet URL
     const SHEET_URL = "https://docs.google.com/spreadsheets/d/1krG5NFJ2Uo2tP90fgh9ZeuIJRN80GRkcbik63KXX2Es/gviz/tq?tqx=out:json&gid=339189941";
 
     function browserSpeak(text) {
@@ -98,7 +98,7 @@
         }
     }
 
-    // Robust Data Parsing and Verification Engine
+    // Exact Column Mapping Engine Based On User Input
     function processWebLogin() {
         const inputId = document.getElementById('webMemberId').value.trim().toLowerCase();
         const status = document.getElementById('webStatus');
@@ -117,15 +117,15 @@
             let foundUser = null;
             
             for(let row of rows) {
-                if(row.c && row.c[0]) {
-                    // Extracting text/numeric value accurately from Google Sheet cells
-                    let sheetId = row.c[0].f ? row.c[0].f.trim().toLowerCase() : (row.c[0].v ? String(row.c[0].v).trim().toLowerCase() : "");
+                // row.c[1] = Column B (Member ID)
+                if(row.c && row.c[1]) {
+                    let sheetId = row.c[1].f ? row.c[1].f.trim().toLowerCase() : (row.c[1].v ? String(row.c[1].v).trim().toLowerCase() : "");
                     
                     if(sheetId === inputId) {
                         foundUser = {
                             id: sheetId,
-                            name: row.c[1] ? (row.c[1].f ? row.c[1].f : String(row.c[1].v)) : "Member",
-                            age: row.c[2] ? parseInt(row.c[2].v) : 20
+                            name: row.c[2] ? (row.c[2].f ? row.c[2].f : String(row.c[2].v)) : "Member", // Column C = Full Name
+                            age: row.c[5] ? parseInt(row.c[5].v) : 20 // Column F = Age
                         };
                         break;
                     }
@@ -141,13 +141,13 @@
                 browserSpeak(`Namaste ${globalUserData.name}, aapka data mil gaya hai. Main aapki Herbalife coach hoon.`);
             } else {
                 status.style.color = "red";
-                status.innerText = "Error: Ye Member ID Google Sheet mein nahi mili!";
+                status.innerText = "Error: Ye Member ID Column B mein nahi mili!";
                 browserSpeak("Kripya sahi member i d dalein.");
             }
         })
         .catch(err => {
             status.style.color = "red";
-            status.innerText = "Sheet Access Error! Kripya check karein ki sheet Share ho rakhi hai ya nahi.";
+            status.innerText = "Sheet Access Error! Check karein ki sheet Anyone with link par set hai.";
             console.error(err);
         });
     }
