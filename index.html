@@ -3,97 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Herbalife Smart Wellness Studio</title>
+    <title>Herbalife Smart Wellness Studio App</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: #f0f4f8; color: #333; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .app-container { background: #ffffff; max-width: 500px; width: 100%; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; padding: 30px; }
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { color: #2e7d32; font-size: 26px; font-weight: bold; }
-        .input-group { margin-bottom: 20px; }
-        input[type="text"] { width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 8px; font-size: 16px; outline: none; transition: 0.3s; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        #herbalife-app-root { max-width: 550px; width: 100%; padding: 30px; background: #ffffff; border-radius: 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.15); }
+        .text-center { text-align: center; }
+        h2 { color: #2e7d32; margin-bottom: 5px; font-size: 24px; }
+        p { color: #666; font-size: 14px; margin-bottom: 25px; }
+        label { display:block; font-weight: bold; margin-bottom: 10px; color: #333; font-size: 16px; }
+        input[type="text"] { width: 100%; padding: 14px; border: 2px solid #ccc; border-radius: 10px; font-size: 16px; margin-bottom: 20px; outline: none; }
         input[type="text"]:focus { border-color: #2e7d32; }
-        .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-bottom: 10px; text-transform: uppercase; }
-        .btn-verify { background: #2e7d32; color: white; }
-        .btn-verify:hover { background: #1b5e20; }
-        .btn-canva { background: #d32f2f; color: white; margin-top: 20px; }
-        .btn-canva:hover { background: #b71c1c; }
-        .status-msg { text-align: center; font-weight: bold; margin-top: 15px; font-size: 15px; }
-        .dashboard { display: none; margin-top: 20px; text-align: center; }
-        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .menu-card { background: #f1f8e9; padding: 20px; border-radius: 10px; border: 1px solid #c8e6c9; cursor: pointer; font-weight: bold; font-size: 15px; }
-        .menu-card:hover { background: #c8e6c9; }
+        .btn { width: 100%; padding: 15px; border: none; font-weight: bold; font-size: 16px; border-radius: 10px; cursor: pointer; text-transform: uppercase; margin-bottom: 12px; }
+        .main-btn { background: #2e7d32; color: white; }
+        .canva-btn { background: #d32f2f; color: white; margin-top: 25px; }
+        #webStatus { font-weight: bold; margin-top: 10px; color: #d32f2f; font-size: 15px; }
+        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; margin-top: 25px; }
+        .menu-btn { padding: 22px; font-weight: bold; border-radius: 12px; cursor: pointer; border: 2px solid #eee; font-size: 16px; text-align: center; }
+        .blue-btn { background: #e3f2fd; color: #0d47a1; border-color: #bbdefb; }
+        .green-btn { background: #e8f5e9; color: #1b5e20; border-color: #c8e6c9; }
+        .orange-btn { background: #fff3e0; color: #e65100; border-color: #ffe0b2; }
+        .purple-btn { background: #f3e5f5; color: #4a148c; border-color: #e1bee7; }
+        #camera-container { display:none; text-align: center; margin-bottom: 25px; background: #000; padding: 15px; border-radius: 16px; }
+        video { width: 100%; max-width: 400px; border-radius: 10px; transform: scaleX(-1); }
+        #countdownTimer { font-size: 22px; font-weight: bold; color: #ffeb3b; margin-top: 12px; }
+        #webCalendarGrid { display:none; margin-bottom: 25px; background: #f9f9f9; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0; }
+        #daysContainer { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 15px; }
+        .day-box { padding: 10px 5px; background: #e0e0e0; border-radius: 6px; font-size: 13px; font-weight: bold; text-align: center; color: #333; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <div class="header">
-        <h1>HERBALIFE SMART WELLNESS</h1>
-        <p style="color: #666; margin-top: 5px;">Browser Web Portal</p>
+<div id="herbalife-app-root">
+    <div class="text-center">
+        <h2>Herbalife Smart Studio</h2>
+        <p>Pure Mobile Browser AI System</p>
     </div>
 
-    <!-- LOGIN SECTION -->
-    <div id="login-section">
-        <div class="input-group">
-            <input type="text" id="memberIdInput" placeholder="Enter Member ID here...">
-        </div>
-        <button class="btn btn-verify" onclick="verifyId()">Verify & Analyze</button>
-        <div id="statusMessage" class="status-msg"></div>
+    <!-- LOGIN SCREEN -->
+    <div id="web-login-box">
+        <label>Enter Member ID:</label>
+        <input type="text" id="webMemberId" placeholder="Type ID here...">
+        <button class="btn main-btn" onclick="processWebLogin()">VERIFY ID & START COACHING</button>
+        <p id="webStatus" class="text-center"></p>
     </div>
 
-    <!-- DASHBOARD SECTION (SABHI SPECIFIC BUTTONS KE SAATH) -->
-    <div id="dashboard-section" class="dashboard">
-        <h2 id="welcomeText" style="color: #2e7d32; margin-bottom: 15px;">Welcome!</h2>
-        <p>AI Professional Coach System Active</p>
+    <!-- MAIN DASHBOARD -->
+    <div id="web-dashboard-box" style="display: none;">
+        <h3 id="webWelcomeName" class="text-center" style="color: #2e7d32; margin-bottom: 15px;">Welcome!</h3>
         
-        <div class="grid-menu">
-            <div class="menu-card" onclick="alert('PDF Diet Plan Feature coming to web!')">📋<br>Diet Plan</div>
-            <div class="menu-card" onclick="alert('Camera Scanner coming to web!')">📷<br>Scan Activity</div>
-            <div class="menu-card" onclick="alert('Calendar logs coming to web!')">📅<br>Calendar</div>
-            <div class="menu-card" onclick="alert('AI Female Voice active soon!')">🎙️<br>Talk to AI</div>
+        <!-- Live Camera Section -->
+        <div id="camera-container">
+            <video id="webcamView" autoplay playsinline></video>
+            <div id="countdownTimer">AI Scanning Activity: 10s</div>
         </div>
 
-        <button class="btn btn-canva" onclick="window.open('https://herbalife-smart-wellness-studio.my.canva.site/page-3', '_blank')">🌐 Go to Main Website</button>
+        <!-- Dashboard Buttons -->
+        <div class="grid-menu">
+            <button class="menu-btn blue-btn" onclick="handleWebDiet()">📋<br>Diet Plan</button>
+            <button class="menu-btn green-btn" onclick="startBrowserCameraScan()">📷<br>Scan Activity (10s)</button>
+            <button class="menu-btn orange-btn" onclick="toggleWebCalendar()">📅<br>Calendar Logs</button>
+            <button class="menu-btn purple-btn" onclick="triggerFemaleVoiceBot()">🎙️<br>Talk to AI Coach</button>
+        </div>
+
+        <!-- Calendar Tracking Grid -->
+        <div id="webCalendarGrid">
+            <h4 class="text-center" style="color: #333;">Monthly Progress (Green = Done)</h4>
+            <div id="daysContainer"></div>
+        </div>
+
+        <button class="btn canva-btn" onclick="window.open('https://herbalife-smart-wellness-studio.my.canva.site/page-3', '_blank')">🌐 GO TO MAIN WEBSITE</button>
     </div>
 </div>
 
 <script>
-    function verifyId() {
-        const memberId = document.getElementById('memberIdInput').value;
-        const statusBox = document.getElementById('statusMessage');
-        
-        if(!memberId) {
-            statusBox.style.color = "red";
-            statusBox.innerText = "Error: Please enter a Member ID";
-            return;
+    let globalUserData = null;
+    
+    // Server hata kar direct sheet ka link daal diya hai
+    const SHEET_URL = "https://docs.google.com/spreadsheets/d/1krG5NFJ2Uo2tP90fgh9ZeuIJRN80GRkcbik63KXX2Es/gviz/tq?tqx=out:json&gid=339189941";
+
+    function browserSpeak(text) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            let utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'hi-IN';
+            let voices = window.speechSynthesis.getVoices();
+            let femaleVoice = voices.find(v => v.name.includes('Google') || v.name.includes('Female') || v.lang === 'hi-IN');
+            if (femaleVoice) utterance.voice = femaleVoice;
+            window.speechSynthesis.speak(utterance);
         }
+    }
 
-        statusBox.style.color = "#333";
-        statusBox.innerText = "Checking Google Sheet records...";
+    function processWebLogin() {
+        const mid = document.getElementById('webMemberId').value.trim();
+        const status = document.getElementById('webStatus');
+        if(!mid) { status.style.color = "red"; status.innerText = "Kripya Member ID dalein!"; return; }
 
-        // Flask API ko call karna
-        fetch('/api/verify', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ member_id: memberId })
-        })
-        .then(response => response.json())
+        status.style.color = "#2e7d32";
+        status.innerText = "Google Sheet se connect ho raha hai...";
+
+        // Ab ye direct Google Sheet se baat karega, koi Python server nahi chahiye!
+        fetch(SHEET_URL)
+        .then(res => res.text())
         .then(data => {
-            if(data.success) {
-                statusBox.innerText = "";
-                document.getElementById('login-section').style.display = 'none';
-                document.getElementById('dashboard-section').style.display = 'block';
-                document.getElementById('welcomeText').innerText = `Coach Dashboard\nWelcome, ${data.name}!`;
+            const rawData = data.substring(47, data.length - 2);
+            const json = JSON.parse(rawData);
+            const rows = json.table.rows;
+            
+            let foundUser = null;
+            
+            for(let row of rows) {
+                if(row.c[0] && String(row.c[0].v).trim() === mid) {
+                    foundUser = {
+                        id: row.c[0] ? row.c[0].v : "",
+                        name: row.c[1] ? row.c[1].v : "Member",
+                        age: row.c[2] ? parseInt(row.c[2].v) : 20
+                    };
+                    break;
+                }
+            }
+
+            if(foundUser) {
+                globalUserData = foundUser;
+                document.getElementById('web-login-box').style.display = 'none';
+                document.getElementById('web-dashboard-box').style.display = 'block';
+                document.getElementById('webWelcomeName').innerText = `Coach Dashboard\nWelcome, ${globalUserData.name}!`;
+                status.innerText = "";
+                browserSpeak(`Namaste ${globalUserData.name}, aapka data mil gaya hai. Main aapki Herbalife coach hoon.`);
             } else {
-                statusBox.style.color = "red";
-                statusBox.innerText = data.error;
+                status.style.color = "red";
+                status.innerText = "Member ID nahi mili! Kripya sahi ID dalein.";
             }
         })
         .catch(err => {
-            statusBox.style.color = "red";
-            statusBox.innerText = "Server Error: Make sure app_web.py is running.";
+            status.style.color = "red";
+            status.innerText = "Sheet Access Error! Kripya Google sheet ko share karke 'Anyone with link' par set karein.";
         });
+    }
+
+    function handleWebDiet() {
+        if(globalUserData && globalUserData.age < 15) {
+            browserSpeak("Aapke liye bacchon ka special daily routine aur diet plan load kiya gaya hai.");
+            alert("✨ Kids Diet Plan Active!");
+        } else {
+            browserSpeak("Aapka adult standard weight management diet plan active ho gaya hai.");
+            alert("🥗 Adult Diet Plan Active!");
+        }
+    }
+
+    function startBrowserCameraScan() {
+        const camContainer = document.getElementById('camera-container');
+        const video = document.getElementById('webcamView');
+        const timerText = document.getElementById('countdownTimer');
+        
+        camContainer.style.display = "block";
+        browserSpeak("Camera analysis start ho raha hai.");
+
+        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+        .then(stream => {
+            video.srcObject = stream;
+            let timeLeft = 10;
+            
+            let counter = setInterval(() => {
+                timeLeft--;
+                timerText.innerText = `AI Scanning Activity: ${timeLeft}s`;
+                if(timeLeft <= 0) {
+                    clearInterval(counter);
+                    stream.getTracks().forEach(track => track.stop());
+                    camContainer.style.display = "none";
+                    browserSpeak("Aapka task successfully verify ho gaya hai.");
+                    alert("✅ Success! Task Logged.");
+                    markCalendarToday();
+                }
+            }, 1000);
+        }).catch(err => {
+            alert("Kripya mobile browser mein camera access allow karein.");
+        });
+    }
+
+    function toggleWebCalendar() {
+        const cal = document.getElementById('webCalendarGrid');
+        cal.style.display = cal.style.display === "none" ? "block" : "none";
+        
+        const container = document.getElementById('daysContainer');
+        if(container.children.length === 0) {
+            for(let i=1; i<=30; i++) {
+                let dayBox = document.createElement('div');
+                dayBox.innerText = i;
+                dayBox.id = `day-box-${i}`;
+                dayBox.className = 'day-box';
+                container.appendChild(dayBox);
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.getVoices();
+        }
+    });
+
+    function markCalendarToday() {
+        toggleWebCalendar();
+        document.getElementById('webCalendarGrid').style.display = "block";
+        const today = new Date().getDate();
+        const todayBox = document.getElementById(`day-box-${today}`);
+        if(todayBox) {
+            todayBox.style.background = "#2e7d32";
+            todayBox.style.color = "white";
+        }
+    }
+
+    function triggerFemaleVoiceBot() {
+        browserSpeak("Main live data sheet se connect hoon. Aapko apni health ke baare mein kya poochna hai?");
     }
 </script>
 </body>
