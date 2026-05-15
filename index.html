@@ -18,7 +18,7 @@
         .main-btn { background: #2e7d32; color: white; box-shadow: 0 4px 12px rgba(46,125,50,0.2); }
         .main-btn:hover { background: #1b5e20; }
         .canva-btn { background: #d32f2f; color: white; margin-top: 20px; box-shadow: 0 4px 12px rgba(211,47,47,0.2); }
-        #webStatus { font-weight: bold; margin-top: 10px; font-size: 15px; text-align: center; color: #d32f2f; }
+        #webStatus { font-weight: bold; margin-top: 10px; font-size: 15px; text-align: center; color: #d32f2f; min-height: 20px; }
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 25px 0; }
         .menu-btn { padding: 20px 10px; font-weight: bold; border-radius: 14px; cursor: pointer; border: 2px solid #eee; font-size: 15px; transition: 0.3s; text-align: center; background: #fff; }
         .menu-btn:active { transform: scale(0.95); }
@@ -45,7 +45,7 @@
     <!-- 1. LOGIN / VERIFICATION SCREEN -->
     <div id="web-login-box">
         <label>Enter Member ID:</label>
-        <input type="text" id="webMemberId" placeholder="Jaise: 12345, H101 aadi...">
+        <input type="text" id="webMemberId" placeholder="Type Member ID here...">
         <button class="btn main-btn" onclick="processWebLogin()">VERIFY ID & START COACHING</button>
         <div id="webStatus"></div>
     </div>
@@ -82,15 +82,14 @@
 <script>
     let globalUserData = null;
     
-    // Aapki di hui exact Google Sheet ka live data endpoint URL
+    // Exact API url for fetching Google Sheet data safely
     const SHEET_URL = "https://docs.google.com/spreadsheets/d/1krG5NFJ2Uo2tP90fgh9ZeuIJRN80GRkcbik63KXX2Es/gviz/tq?tqx=out:json&gid=339189941";
 
-    // Text to Speech Function (Mobile Friendly Professional Female Voice)
     function browserSpeak(text) {
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
             let utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'hi-IN'; // Hindi-English mixed professional tone
+            utterance.lang = 'hi-IN';
             
             let voices = window.speechSynthesis.getVoices();
             let femaleVoice = voices.find(v => v.name.includes('Google') || v.name.includes('Female') || v.lang === 'hi-IN');
@@ -99,11 +98,11 @@
         }
     }
 
-    // Direct Browser Google Sheet Verification Engine
+    // Robust Data Parsing and Verification Engine
     function processWebLogin() {
-        const mid = document.getElementById('webMemberId').value.trim();
+        const inputId = document.getElementById('webMemberId').value.trim().toLowerCase();
         const status = document.getElementById('webStatus');
-        if(!mid) { status.style.color = "red"; status.innerText = "Kripya Member ID dalein!"; return; }
+        if(!inputId) { status.style.color = "red"; status.innerText = "Kripya Member ID dalein!"; return; }
 
         status.style.color = "#2e7d32";
         status.innerText = "Google Sheet se connect ho raha hai...";
@@ -111,22 +110,25 @@
         fetch(SHEET_URL)
         .then(res => res.text())
         .then(data => {
-            // Google Sheet ke raw response ko clean JSON mein badalna
             const rawData = data.substring(47, data.length - 2);
             const json = JSON.parse(rawData);
             const rows = json.table.rows;
             
             let foundUser = null;
             
-            // Loop jo check karega ki Column A mein Member ID match ho rahi hai ya nahi
             for(let row of rows) {
-                if(row.c && row.c[0] && String(row.c[0].v).trim() === mid) {
-                    foundUser = {
-                        id: row.c[0] ? row.c[0].v : "",
-                        name: row.c[1] ? row.c[1].v : "Member",
-                        age: row.c[2] ? parseInt(row.c[2].v) : 20
-                    };
-                    break;
+                if(row.c && row.c[0]) {
+                    // Extracting text/numeric value accurately from Google Sheet cells
+                    let sheetId = row.c[0].f ? row.c[0].f.trim().toLowerCase() : (row.c[0].v ? String(row.c[0].v).trim().toLowerCase() : "");
+                    
+                    if(sheetId === inputId) {
+                        foundUser = {
+                            id: sheetId,
+                            name: row.c[1] ? (row.c[1].f ? row.c[1].f : String(row.c[1].v)) : "Member",
+                            age: row.c[2] ? parseInt(row.c[2].v) : 20
+                        };
+                        break;
+                    }
                 }
             }
 
@@ -136,7 +138,7 @@
                 document.getElementById('web-dashboard-box').style.display = 'block';
                 document.getElementById('webWelcomeName').innerText = `Coach Dashboard\nWelcome, ${globalUserData.name}!`;
                 status.innerText = "";
-                browserSpeak(`Namaste ${globalUserData.name}, aapka data check ho gaya hai. Main aapki professional Herbalife coach hoon.`);
+                browserSpeak(`Namaste ${globalUserData.name}, aapka data mil gaya hai. Main aapki Herbalife coach hoon.`);
             } else {
                 status.style.color = "red";
                 status.innerText = "Error: Ye Member ID Google Sheet mein nahi mili!";
@@ -145,12 +147,11 @@
         })
         .catch(err => {
             status.style.color = "red";
-            status.innerText = "Sheet Access Error! Google sheet par jaakar Share -> 'Anyone with link' zaroor karein.";
+            status.innerText = "Sheet Access Error! Kripya check karein ki sheet Share ho rakhi hai ya nahi.";
             console.error(err);
         });
     }
 
-    // Kid vs Adult Diet Routing Logic
     function handleWebDiet() {
         if(globalUserData && globalUserData.age < 15) {
             browserSpeak("Aapki umar pandrah saal se kam hai, isliye aapke liye bacchon ka daily activity routine active kiya gaya hai.");
@@ -161,7 +162,6 @@
         }
     }
 
-    // 10 Second Mobile Camera Activity Tracker Engine
     function startBrowserCameraScan() {
         const camContainer = document.getElementById('camera-container');
         const video = document.getElementById('webcamView');
@@ -170,7 +170,6 @@
         camContainer.style.display = "block";
         browserSpeak("Camera start ho raha hai. Kripya samne dekhein.");
 
-        // Mobile browsers ke liye perfect back/front camera configurations
         navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false })
         .then(stream => {
             video.srcObject = stream;
@@ -181,7 +180,6 @@
                 timerText.innerText = `AI Scanning Activity: ${timeLeft}s`;
                 if(timeLeft <= 0) {
                     clearInterval(counter);
-                    // Camera ko automatically band karna taaki mobile hang na ho
                     stream.getTracks().forEach(track => track.stop());
                     camContainer.style.display = "none";
                     
@@ -195,7 +193,6 @@
         });
     }
 
-    // Dynamic Monthly Grid Calendar Generator
     function toggleWebCalendar() {
         const cal = document.getElementById('webCalendarGrid');
         cal.style.display = cal.style.display === "none" ? "block" : "none";
@@ -212,7 +209,6 @@
         }
     }
 
-    // Auto-ticking system based on current date
     function markCalendarToday() {
         toggleWebCalendar();
         document.getElementById('webCalendarGrid').style.display = "block";
@@ -228,7 +224,6 @@
         browserSpeak("Main aapki live google sheet se connected hoon. Aapko apni diet ya health ke baare mein kya poochna hai?");
     }
 
-    // Pre-loading voices in browser
     window.speechSynthesis.onvoiceschanged = function() { };
 </script>
 </body>
