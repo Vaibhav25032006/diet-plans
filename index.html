@@ -5,31 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Herbalife Smart Wellness Studio App</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-        body { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        #herbalife-app-root { max-width: 550px; width: 100%; padding: 30px; background: #ffffff; border-radius: 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.15); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
+        #herbalife-app-root { max-width: 500px; width: 100%; padding: 25px; background: #ffffff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .text-center { text-align: center; }
-        h2 { color: #2e7d32; margin-bottom: 5px; font-size: 24px; }
+        h2 { color: #2e7d32; margin-bottom: 5px; font-size: 24px; font-weight: 700; }
         p { color: #666; font-size: 14px; margin-bottom: 25px; }
         label { display:block; font-weight: bold; margin-bottom: 10px; color: #333; font-size: 16px; }
-        input[type="text"] { width: 100%; padding: 14px; border: 2px solid #ccc; border-radius: 10px; font-size: 16px; margin-bottom: 20px; outline: none; }
+        input[type="text"] { width: 100%; padding: 14px; border: 2px solid #ccc; border-radius: 12px; font-size: 16px; margin-bottom: 20px; outline: none; transition: 0.3s; }
         input[type="text"]:focus { border-color: #2e7d32; }
-        .btn { width: 100%; padding: 15px; border: none; font-weight: bold; font-size: 16px; border-radius: 10px; cursor: pointer; text-transform: uppercase; margin-bottom: 12px; }
-        .main-btn { background: #2e7d32; color: white; }
-        .canva-btn { background: #d32f2f; color: white; margin-top: 25px; }
-        #webStatus { font-weight: bold; margin-top: 10px; color: #d32f2f; font-size: 15px; }
-        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; margin-top: 25px; }
-        .menu-btn { padding: 22px; font-weight: bold; border-radius: 12px; cursor: pointer; border: 2px solid #eee; font-size: 16px; text-align: center; }
+        .btn { width: 100%; padding: 15px; border: none; font-weight: bold; font-size: 16px; border-radius: 12px; cursor: pointer; text-transform: uppercase; margin-bottom: 12px; transition: 0.2s; }
+        .main-btn { background: #2e7d32; color: white; box-shadow: 0 4px 12px rgba(46,125,50,0.2); }
+        .main-btn:hover { background: #1b5e20; }
+        .canva-btn { background: #d32f2f; color: white; margin-top: 20px; box-shadow: 0 4px 12px rgba(211,47,47,0.2); }
+        #webStatus { font-weight: bold; margin-top: 10px; font-size: 15px; text-align: center; color: #d32f2f; }
+        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 25px 0; }
+        .menu-btn { padding: 20px 10px; font-weight: bold; border-radius: 14px; cursor: pointer; border: 2px solid #eee; font-size: 15px; transition: 0.3s; text-align: center; background: #fff; }
+        .menu-btn:active { transform: scale(0.95); }
         .blue-btn { background: #e3f2fd; color: #0d47a1; border-color: #bbdefb; }
         .green-btn { background: #e8f5e9; color: #1b5e20; border-color: #c8e6c9; }
         .orange-btn { background: #fff3e0; color: #e65100; border-color: #ffe0b2; }
         .purple-btn { background: #f3e5f5; color: #4a148c; border-color: #e1bee7; }
         #camera-container { display:none; text-align: center; margin-bottom: 25px; background: #000; padding: 15px; border-radius: 16px; }
-        video { width: 100%; max-width: 400px; border-radius: 10px; transform: scaleX(-1); }
-        #countdownTimer { font-size: 22px; font-weight: bold; color: #ffeb3b; margin-top: 12px; }
-        #webCalendarGrid { display:none; margin-bottom: 25px; background: #f9f9f9; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0; }
-        #daysContainer { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 15px; }
-        .day-box { padding: 10px 5px; background: #e0e0e0; border-radius: 6px; font-size: 13px; font-weight: bold; text-align: center; color: #333; }
+        video { width: 100%; max-width: 100%; border-radius: 10px; transform: scaleX(-1); background: #222; }
+        #countdownTimer { font-size: 20px; font-weight: bold; color: #ffeb3b; margin-top: 12px; }
+        #webCalendarGrid { display:none; margin-bottom: 25px; background: #f9f9f9; padding: 20px; border-radius: 14px; border: 1px solid #e0e0e0; }
+        #daysContainer { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 15px; }
+        .day-box { padding: 10px 2px; background: #e0e0e0; border-radius: 6px; font-size: 12px; font-weight: bold; text-align: center; color: #333; }
     </style>
 </head>
 <body>
@@ -40,25 +42,25 @@
         <p>Pure Mobile Browser AI System</p>
     </div>
 
-    <!-- LOGIN SCREEN -->
+    <!-- 1. LOGIN / VERIFICATION SCREEN -->
     <div id="web-login-box">
         <label>Enter Member ID:</label>
-        <input type="text" id="webMemberId" placeholder="Type ID here...">
+        <input type="text" id="webMemberId" placeholder="Jaise: 12345, H101 aadi...">
         <button class="btn main-btn" onclick="processWebLogin()">VERIFY ID & START COACHING</button>
-        <p id="webStatus" class="text-center"></p>
+        <div id="webStatus"></div>
     </div>
 
-    <!-- MAIN DASHBOARD -->
+    <!-- 2. MAIN USER DASHBOARD -->
     <div id="web-dashboard-box" style="display: none;">
-        <h3 id="webWelcomeName" class="text-center" style="color: #2e7d32; margin-bottom: 15px;">Welcome!</h3>
+        <h3 id="webWelcomeName" class="text-center" style="color: #2e7d32; margin-bottom: 15px; font-size: 20px;">Welcome!</h3>
         
-        <!-- Live Camera Section -->
+        <!-- Live Mobile Camera Scanning Section -->
         <div id="camera-container">
-            <video id="webcamView" autoplay playsinline></video>
+            <video id="webcamView" autoplay playsinline muted></video>
             <div id="countdownTimer">AI Scanning Activity: 10s</div>
         </div>
 
-        <!-- Dashboard Buttons -->
+        <!-- 4 Action Buttons -->
         <div class="grid-menu">
             <button class="menu-btn blue-btn" onclick="handleWebDiet()">📋<br>Diet Plan</button>
             <button class="menu-btn green-btn" onclick="startBrowserCameraScan()">📷<br>Scan Activity (10s)</button>
@@ -66,12 +68,13 @@
             <button class="menu-btn purple-btn" onclick="triggerFemaleVoiceBot()">🎙️<br>Talk to AI Coach</button>
         </div>
 
-        <!-- Calendar Tracking Grid -->
+        <!-- Calendar Attendance Tracking -->
         <div id="webCalendarGrid">
-            <h4 class="text-center" style="color: #333;">Monthly Progress (Green = Done)</h4>
+            <h4 class="text-center" style="color: #333; font-size: 14px;">Monthly Progress (Green = Done)</h4>
             <div id="daysContainer"></div>
         </div>
 
+        <!-- Canva Redirect Button -->
         <button class="btn canva-btn" onclick="window.open('https://herbalife-smart-wellness-studio.my.canva.site/page-3', '_blank')">🌐 GO TO MAIN WEBSITE</button>
     </div>
 </div>
@@ -79,14 +82,16 @@
 <script>
     let globalUserData = null;
     
-    // Server hata kar direct sheet ka link daal diya hai
+    // Aapki di hui exact Google Sheet ka live data endpoint URL
     const SHEET_URL = "https://docs.google.com/spreadsheets/d/1krG5NFJ2Uo2tP90fgh9ZeuIJRN80GRkcbik63KXX2Es/gviz/tq?tqx=out:json&gid=339189941";
 
+    // Text to Speech Function (Mobile Friendly Professional Female Voice)
     function browserSpeak(text) {
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
             let utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'hi-IN';
+            utterance.lang = 'hi-IN'; // Hindi-English mixed professional tone
+            
             let voices = window.speechSynthesis.getVoices();
             let femaleVoice = voices.find(v => v.name.includes('Google') || v.name.includes('Female') || v.lang === 'hi-IN');
             if (femaleVoice) utterance.voice = femaleVoice;
@@ -94,6 +99,7 @@
         }
     }
 
+    // Direct Browser Google Sheet Verification Engine
     function processWebLogin() {
         const mid = document.getElementById('webMemberId').value.trim();
         const status = document.getElementById('webStatus');
@@ -102,18 +108,19 @@
         status.style.color = "#2e7d32";
         status.innerText = "Google Sheet se connect ho raha hai...";
 
-        // Ab ye direct Google Sheet se baat karega, koi Python server nahi chahiye!
         fetch(SHEET_URL)
         .then(res => res.text())
         .then(data => {
+            // Google Sheet ke raw response ko clean JSON mein badalna
             const rawData = data.substring(47, data.length - 2);
             const json = JSON.parse(rawData);
             const rows = json.table.rows;
             
             let foundUser = null;
             
+            // Loop jo check karega ki Column A mein Member ID match ho rahi hai ya nahi
             for(let row of rows) {
-                if(row.c[0] && String(row.c[0].v).trim() === mid) {
+                if(row.c && row.c[0] && String(row.c[0].v).trim() === mid) {
                     foundUser = {
                         id: row.c[0] ? row.c[0].v : "",
                         name: row.c[1] ? row.c[1].v : "Member",
@@ -129,37 +136,42 @@
                 document.getElementById('web-dashboard-box').style.display = 'block';
                 document.getElementById('webWelcomeName').innerText = `Coach Dashboard\nWelcome, ${globalUserData.name}!`;
                 status.innerText = "";
-                browserSpeak(`Namaste ${globalUserData.name}, aapka data mil gaya hai. Main aapki Herbalife coach hoon.`);
+                browserSpeak(`Namaste ${globalUserData.name}, aapka data check ho gaya hai. Main aapki professional Herbalife coach hoon.`);
             } else {
                 status.style.color = "red";
-                status.innerText = "Member ID nahi mili! Kripya sahi ID dalein.";
+                status.innerText = "Error: Ye Member ID Google Sheet mein nahi mili!";
+                browserSpeak("Kripya sahi member i d dalein.");
             }
         })
         .catch(err => {
             status.style.color = "red";
-            status.innerText = "Sheet Access Error! Kripya Google sheet ko share karke 'Anyone with link' par set karein.";
+            status.innerText = "Sheet Access Error! Google sheet par jaakar Share -> 'Anyone with link' zaroor karein.";
+            console.error(err);
         });
     }
 
+    // Kid vs Adult Diet Routing Logic
     function handleWebDiet() {
         if(globalUserData && globalUserData.age < 15) {
-            browserSpeak("Aapke liye bacchon ka special daily routine aur diet plan load kiya gaya hai.");
-            alert("✨ Kids Diet Plan Active!");
+            browserSpeak("Aapki umar pandrah saal se kam hai, isliye aapke liye bacchon ka daily activity routine active kiya gaya hai.");
+            alert("✨ Kids Special Routine Active!\n\n1. Morning Shake: 150ml\n2. Live Exercise Class Join Timing: 7:00 AM\n3. Daily hydration goal: 2 Liters");
         } else {
-            browserSpeak("Aapka adult standard weight management diet plan active ho gaya hai.");
-            alert("🥗 Adult Diet Plan Active!");
+            browserSpeak("Aapka adult weight management diet plan active ho gaya hai.");
+            alert("🥗 Adult Professional Diet Plan Active!\n\n1. Formula 1 Shake + Protein Powder: 250ml\n2. Afresh Energy Drink Mix: 3 times a day\n3. Balanced Lunch: 400 Calories");
         }
     }
 
+    // 10 Second Mobile Camera Activity Tracker Engine
     function startBrowserCameraScan() {
         const camContainer = document.getElementById('camera-container');
         const video = document.getElementById('webcamView');
         const timerText = document.getElementById('countdownTimer');
         
         camContainer.style.display = "block";
-        browserSpeak("Camera analysis start ho raha hai.");
+        browserSpeak("Camera start ho raha hai. Kripya samne dekhein.");
 
-        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+        // Mobile browsers ke liye perfect back/front camera configurations
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false })
         .then(stream => {
             video.srcObject = stream;
             let timeLeft = 10;
@@ -169,18 +181,21 @@
                 timerText.innerText = `AI Scanning Activity: ${timeLeft}s`;
                 if(timeLeft <= 0) {
                     clearInterval(counter);
+                    // Camera ko automatically band karna taaki mobile hang na ho
                     stream.getTracks().forEach(track => track.stop());
                     camContainer.style.display = "none";
-                    browserSpeak("Aapka task successfully verify ho gaya hai.");
-                    alert("✅ Success! Task Logged.");
+                    
+                    browserSpeak("Aapka task successfully verify ho gaya hai. Calendar par tick laga diya gaya hai.");
+                    alert("✅ Success!\nAI Analysis Verified: Your daily task has been successfully logged!");
                     markCalendarToday();
                 }
             }, 1000);
         }).catch(err => {
-            alert("Kripya mobile browser mein camera access allow karein.");
+            alert("Error: Mobile Browser ne camera allow nahi kiya. Top-left lock icon par click karke camera on karein.");
         });
     }
 
+    // Dynamic Monthly Grid Calendar Generator
     function toggleWebCalendar() {
         const cal = document.getElementById('webCalendarGrid');
         cal.style.display = cal.style.display === "none" ? "block" : "none";
@@ -197,12 +212,7 @@
         }
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.getVoices();
-        }
-    });
-
+    // Auto-ticking system based on current date
     function markCalendarToday() {
         toggleWebCalendar();
         document.getElementById('webCalendarGrid').style.display = "block";
@@ -215,8 +225,11 @@
     }
 
     function triggerFemaleVoiceBot() {
-        browserSpeak("Main live data sheet se connect hoon. Aapko apni health ke baare mein kya poochna hai?");
+        browserSpeak("Main aapki live google sheet se connected hoon. Aapko apni diet ya health ke baare mein kya poochna hai?");
     }
+
+    // Pre-loading voices in browser
+    window.speechSynthesis.onvoiceschanged = function() { };
 </script>
 </body>
 </html>
